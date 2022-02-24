@@ -139,7 +139,7 @@ const APP = {
     },
     pageSpecific: () => {
         if(document.body.id === 'home') {
-            console.log('Home Page');
+            console.log('You are in Home Page');
         };
         if(document.body.id === 'results') {
             console.log('Now in results page');
@@ -159,11 +159,40 @@ const APP = {
         let getRequest = store.get(key);
         getRequest.addEventListener('success', (ev) => {
             APP.results = ev.target.result.value;
+            APP.keyword = key;
             console.log(APP.results);
+            APP.displayCards();
         });
         getRequest.addEventListener('error', (err) => {
             console.warn(err);
         });
+    },
+    displayCards: () => {
+        let h2 = document.querySelector('.h2');
+        h2.textContent = `Search results for "${APP.keyword}"`;
+        let ul = document.querySelector('.cards');
+        ul.innerHTML = '';
+        let ulContent = APP.results.map((item) => {
+            let li = document.createElement('li');
+            let img = document.createElement('img');
+            let title = document.createElement('p');
+            let releaseDate = document.createElement('p');
+            let vote = document.createElement('p');
+            li.classList.add('flex');
+            img.src = ''.concat(APP.baseImgURL, 'w780', item.poster_path);
+            img.alt = item.original_title;
+            title.textContent = item.original_title;
+            title.setAttribute('data-movieId', item.id);
+            title.classList.add('title');
+            releaseDate.textContent = `Release Date: ${item.release_date}`;
+            vote.textContent = `Average Vote: ${item.vote_average}`;
+            li.append(img);
+            li.append(title);
+            li.append(releaseDate);
+            li.append(vote);
+            return li;
+        });
+        ul.append(...ulContent);
     },
 }
 
