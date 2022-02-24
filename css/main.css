@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+html {
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 1.802rem;
+    margin: 0;
+    color: #fff;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 1.602rem;
+}
+
+.masthead {
+    padding: 1rem;
+    background-color: #0d253f;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 0 1.5rem #121212;
+}
+
+.header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.logo {
+    max-width: 7rem;
+}
+
+.search {
+    padding-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    text-align: center;
+    justify-content: center;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.15);
+}
+
+.material-icons {
+    color: #fff;
+    font-size: 5rem;
+}
+
+#search {
+    width: 100%;
+    max-width: 50em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#search:focus {
+    outline: 0.2rem solid #90cea1;
+}
+
+::placeholder {
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.5rem;
+}
