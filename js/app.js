@@ -1,6 +1,8 @@
 
 const APP = {
     DB: null,
+    SW: null,
+    isONLINE: 'onLine' in navigator && navigator.onLine,
     baseURL: 'https://api.themoviedb.org/3/',
     baseImgURL: 'https://image.tmdb.org/t/p/',
     apiKey: 'aa35c0e1a509278f9804efb52b014afa',
@@ -8,8 +10,6 @@ const APP = {
     results: [],
     init: () => {
         APP.openDB();
-        APP.addListeners();
-        APP.pageSpecific();
     },
     openDB: () => {
         let openDBreq = indexedDB.open('movieDB', 3);
@@ -32,11 +32,21 @@ const APP = {
         });
         openDBreq.addEventListener('success', (ev) => {
             APP.DB = ev.target.result;
-            // register SW later
+            APP.registerSW();
         });
         openDBreq.addEventListener('error', (err) => {
             console.warn(err);
         });
+    },
+    registerSW: () => {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+            console.warn(err);
+        });
+        navigator.serviceWorker.ready.then((registration) => {
+            APP.SW = registration.active;
+        });
+        APP.addListeners();
+        APP.pageSpecific();
     },
     addListeners: () => {
         document.getElementById('searchForm').addEventListener('submit', APP.searchSubmitted);
@@ -74,7 +84,8 @@ const APP = {
                 console.log(`${keyword} exists in searchStore`);
                 // APP.results = ev.target.result;
                 // console.log(APP.results);
-                APP.getSavedResult('searchStore', keyword);
+                APP.navigate(keyword);
+                //APP.getSavedResult('searchStore', keyword);
             };
         });
         check.addEventListener('error', (err) => {
@@ -136,8 +147,7 @@ const APP = {
             let params = url.searchParams;
             console.log(params.has('keyword'), params.get('keyword'));
             keyword = params.get('keyword');
-            console.log(APP.DB);
-            //APP.getSavedResult('searchStore', keyword);
+            APP.getSavedResult('searchStore', keyword);
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
@@ -148,8 +158,7 @@ const APP = {
         let store = tx.objectStore(storeName);
         let getRequest = store.get(key);
         getRequest.addEventListener('success', (ev) => {
-            APP.navigate(key);
-            console.log('We have data.');
+            APP.results = ev.target.result.value;
             console.log(APP.results);
         });
         getRequest.addEventListener('error', (err) => {
