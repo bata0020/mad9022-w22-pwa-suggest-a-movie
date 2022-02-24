@@ -41,7 +41,7 @@ h2 {
 
 .header {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -76,7 +76,7 @@ button:hover {
 
 #search {
     width: 100%;
-    max-width: 50em;
+    max-width: 25em;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -86,5 +86,51 @@ button:hover {
 
 ::placeholder {
     font-family: 'Montserrat', sans-serif;
-    padding: 0.5rem;
+    padding: 0.25rem;
+}
+
+@media only screen and (min-width: 45em) {
+    .header {
+        gap: 2rem;
+    }
+    .logo {
+        max-width: 9rem;
+    }
+
+    h1 {
+        font-size: 2.488rem;
+    }
+
+    h2 {
+        font-size: 2.074rem;
+    }
+
+    #search {
+        font-size: 1.1rem;
+    }
+}
+
+@media only screen and (min-width: 60em) {
+    .header {
+        gap: 4rem;
+    }
+    .logo {
+        max-width: 10rem;
+    }
+
+    h1 {
+        font-size: 3.052rem;
+    }
+
+    h2 {
+        font-size: 2.441rem;
+    }
+
+    #search {
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 1.1rem;
+    }
 }
