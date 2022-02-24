@@ -89,9 +89,37 @@ const APP = {
             console.log(ev.target.results);
         });
     },
-    fetchMovieDB: () => {
-        
+    fetchMovieDB: (endpoint) => {
+        let url = ''.concat(APP.baseURL, 'search/movie?api_key=', APP.apiKey, '&query=', endpoint);
+        fetch (url, {
+            method: 'GET'
+        })
+        .then (response => {
+            if (response.status >= 400) {
+                throw new NetworkError(`Failed to fetch to ${url}`, response.status, response.statusText);
+            }
+            return response.json()
+        })
+        .then (data => {
+            console.log(data.results);
+            let value = data.results;
+            let keyword = endpoint;
+            let obj = { keyword, value }
+            console.log(obj);
+            APP.saveToDB(obj, 'searchStore');
+        })
+        .catch (err => {
+            console.warn(err);
+        });
     },
 }
 
 document.addEventListener('DOMContentLoaded', APP.init);
+
+class NetworkError extends Error {
+    constructor(msg, status, statusText){
+        super(msg);
+        this.status = status;
+        this.statusText = statusText;
+    }
+}
