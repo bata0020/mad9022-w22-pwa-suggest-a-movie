@@ -7,11 +7,23 @@
     <title>Movie Search Home Page</title>
     <link rel="stylesheet" href="./css/main.css" />
     <!-- Add all the link and meta tags and google font css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body id="results">
     <div class="container">
         <header class="masthead">
-            <h1>Suggest A Movie</h1>
+            <div class="header">
+                <img src="./img/tmdb-logo.svg" alt="Movie DB Logo" class="logo"/>   
+                <h1>Suggest A Movie</h1>
+            </div>
+            <form id="searchForm" name="searchForm">
+                <div class="search">
+                    <input type="search" id="search" name="search" placeholder="Search">
+                    <button>
+                        <i class="material-icons">search</i>
+                    </button>
+                </div>
+            </form>
         </header>
         <main>
             <section class="titleArea">
@@ -21,11 +33,6 @@
                 <!-- list would be the list of matching searches OR the movie cards -->
             </section>
         </main>
-        <section class="searchArea">
-            <form id="searchForm" name="searchForm">
-                <input type="search" id="inputSearch" name="inputSearch" value="" />
-            </form>
-        </section>
     </div>
     <script src="./js/app.js" defer></script>
 </body>

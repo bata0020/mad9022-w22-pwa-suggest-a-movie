@@ -77,7 +77,9 @@ button:hover {
     width: 100%;
     max-width: 25em;
     font-family: 'Montserrat', sans-serif;
-    padding: 0.5rem;
+    padding: 0.35rem;
+    border-radius: 0.25rem;
+    border: none;
 }
 
 #search:focus {
