@@ -32,11 +32,12 @@ h2 {
 
 .masthead {
     padding: 1rem;
-    background-color: #0d253f;
+    background-color: #1e354c;
+    /* background-color: #0d253f; */
     position: fixed;
     top: 0;
     width: 100%;
-    box-shadow: 0 0.1rem 0.5rem #121212;
+    box-shadow: 0 0 0.75rem #000;
 }
 
 .header {
@@ -83,13 +84,61 @@ button:hover {
 }
 
 #search:focus {
-    outline: 0.2rem solid #90cea1;
+    outline: 0.2rem solid #66b3ff;
 }
 
 ::placeholder {
     font-family: 'Montserrat', sans-serif;
     padding: 0.25rem;
     text-align: center;
+}
+
+.contentArea {
+    position: absolute;
+    top: 9rem;
+    z-index: -100;
+}
+
+.h2 {
+    padding: 1rem 1rem 0;
+    margin: 0;
+    text-align: center;
+}
+
+.keyword {
+    color: #ff6666;
+}
+
+.cards {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.flex {
+    padding: 1rem 1rem 0;
+}
+
+.card {
+    border: 0.125rem solid #1e354c;
+    background-color: #335c85;
+    color: #fff;
+    border-radius: 0.5rem;
+}
+
+.card img {
+    border-bottom: 0.125rem solid #1e354c;
+    border-top-left-radius: 0.45rem;
+    border-top-right-radius: 0.45rem;
+}
+.cards p {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+.title {
+    padding-top: 0.5rem;
 }
 
 @media only screen and (min-width: 45em) {

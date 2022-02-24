@@ -169,27 +169,31 @@ const APP = {
     },
     displayCards: () => {
         let h2 = document.querySelector('.h2');
-        h2.textContent = `Search results for "${APP.keyword}"`;
+        h2.innerHTML = `Search results for <span class="keyword">"${APP.keyword}"</span>`;
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
         let ulContent = APP.results.map((item) => {
             let li = document.createElement('li');
+            let div = document.createElement('div');
             let img = document.createElement('img');
             let title = document.createElement('p');
             let releaseDate = document.createElement('p');
             let vote = document.createElement('p');
             li.classList.add('flex');
+            div.classList.add('card');
             img.src = ''.concat(APP.baseImgURL, 'w780', item.poster_path);
             img.alt = item.original_title;
-            title.textContent = item.original_title;
+            title.textContent = `Title: ${item.original_title}`;
             title.setAttribute('data-movieId', item.id);
             title.classList.add('title');
             releaseDate.textContent = `Release Date: ${item.release_date}`;
             vote.textContent = `Average Vote: ${item.vote_average}`;
-            li.append(img);
-            li.append(title);
-            li.append(releaseDate);
-            li.append(vote);
+            vote.classList.add('vote');
+            div.append(img);
+            div.append(title);
+            div.append(releaseDate);
+            div.append(vote);
+            li.append(div)
             return li;
         });
         ul.append(...ulContent);
