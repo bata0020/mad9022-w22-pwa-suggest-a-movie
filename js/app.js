@@ -38,19 +38,6 @@ const APP = {
             console.warn(err);
         });
     },
-    // createTx: (storeName) => {
-    //     let tx = APP.DB.transaction(storeName, 'readwrite');
-    //     tx.addEventListener('error', (err) => {
-    //         console.warn(err);
-    //     });
-    //     tx.addEventListener('success', (ev) => {
-    //         console.log(ev.target.result);
-    //     });
-    //     tx.addEventListener('complete', (ev) => {
-    //         console.log(ev.target.result);
-    //     });
-    //     return tx;
-    // },
     addListeners: () => {
         document.getElementById('searchForm').addEventListener('submit', APP.searchSubmitted);
         document.querySelector('.header').addEventListener('click', () => {
@@ -61,15 +48,20 @@ const APP = {
         ev.preventDefault();
         let input = document.getElementById('search').value.trim();
         if (!input) return;
-        APP.checkDB(input);
+        APP.checkDBforMatch(input);
     },
-    checkDB: (keyword) => {
-        // checks indexeddb for match keyword
-        let tx = APP.DB.transaction('searchStore');
+    createTx: (storeName) => {
+        let tx = APP.DB.transaction(storeName, 'readwrite');
         tx.addEventListener('complete', (ev) => {
-            console.log('Check tx complete.');
-            APP.navigate(keyword);
+            console.log('Tx complete.')
         });
+        tx.addEventListener('error', (err) => {
+            console.warn(err);
+        });
+        return tx;
+    },
+    checkDBforMatch: (keyword) => {
+        let tx = APP.createTx('searchStore');
         let store = tx.objectStore('searchStore');
         let check = store.get(keyword);
         check.addEventListener('success', (ev) => {
@@ -80,8 +72,9 @@ const APP = {
                 // if does not exists do a fetch from api
             } else {
                 console.log(`${keyword} exists in searchStore`);
-                APP.results = ev.target.result;
-                console.log(APP.results);
+                // APP.results = ev.target.result;
+                // console.log(APP.results);
+                APP.getSavedResult('searchStore', keyword);
             };
         });
         check.addEventListener('error', (err) => {
@@ -115,18 +108,15 @@ const APP = {
         });
     },
     saveToDB: (keyValue, storeName) => {
-        let tx = APP.DB.transaction(storeName, 'readwrite');
+        let tx = APP.createTx(storeName, 'readwrite');
         let store = tx.objectStore(storeName);
         let saveRequest = store.add(keyValue);
         saveRequest.addEventListener('success', (ev) => {
             console.log('Save success');
+            APP.checkDB(APP.keyword);
         });
         saveRequest.addEventListener('error', (err) => {
             console.warn(err);
-        });
-        tx.addEventListener('complete', (ev) => {
-            console.log('Save Tx Complete. Check DB again.');
-            APP.checkDB(APP.keyword);
         });
     },
     navigate: (keyword, id) => {
@@ -146,25 +136,24 @@ const APP = {
             let params = url.searchParams;
             console.log(params.has('keyword'), params.get('keyword'));
             keyword = params.get('keyword');
-            APP.getSavedResult(keyword, 'searchStore');
+            console.log(APP.DB);
+            //APP.getSavedResult('searchStore', keyword);
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
         };
     },
-    getSavedResult: (key, storeName) => {
-        let tx = APP.DB.transaction(storeName);
+    getSavedResult: (storeName, key) => {
+        let tx = APP.createTx(storeName);
         let store = tx.objectStore(storeName);
         let getRequest = store.get(key);
         getRequest.addEventListener('success', (ev) => {
-            console.log('Save success');
+            APP.navigate(key);
+            console.log('We have data.');
+            console.log(APP.results);
         });
         getRequest.addEventListener('error', (err) => {
             console.warn(err);
-        });
-        tx.addEventListener('complete', (ev) => {
-            console.log('Get Tx Complete.');
-            console.log(ev.target.result);
         });
     },
 }
