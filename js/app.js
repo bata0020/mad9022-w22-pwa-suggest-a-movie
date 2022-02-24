@@ -64,9 +64,10 @@ const APP = {
         let tx = APP.DB.transaction('searchStore');
         tx.addEventListener('complete', (ev) => {
             console.log(ev.target.result);
-            console.log('Tx Complete. Do a fetch');
+            console.log('Check tx complete. Get value of tx');
             // what is next step?
-            APP.fetchMovieDB(keyword);
+            APP.navigate(keyword);
+            
         });
         let store = tx.objectStore('searchStore');
         let check = store.get(keyword);
@@ -74,6 +75,7 @@ const APP = {
             let checkResult = ev.target.result;
             if (checkResult === undefined) {
                 console.log(`Check success. ${keyword} is not found in searchStore`);
+                APP.fetchMovieDB(keyword);
                 // if does not exists do a fetch from api
             } else {
                 console.log(`${keyword} exists in searchStore`);
@@ -83,10 +85,6 @@ const APP = {
         );
         check.addEventListener('error', (err) => {
             console.warn(err);
-        });
-        check.addEventListener('complete', (ev) => {
-            console.log(`${keyword} exists in searchStore`);
-            console.log(ev.target.results);
         });
     },
     fetchMovieDB: (endpoint) => {
@@ -104,13 +102,36 @@ const APP = {
             console.log(data.results);
             let value = data.results;
             let keyword = endpoint;
-            let obj = { keyword, value }
-            console.log(obj);
-            APP.saveToDB(obj, 'searchStore');
+            let keyValue = { keyword, value }
+            console.log(keyValue);
+            APP.keyword = endpoint;
+            APP.saveToDB(keyValue, 'searchStore');
         })
         .catch (err => {
             console.warn(err);
         });
+    },
+    saveToDB: (keyValue, storeName) => {
+        let tx = APP.DB.transaction(storeName, 'readwrite');
+        let store = tx.objectStore(storeName);
+        let saveRequest = store.add(keyValue);
+        saveRequest.addEventListener('success', (ev) => {
+            console.log('Save success');
+        });
+        saveRequest.addEventListener('error', (err) => {
+            console.warn(err);
+        });
+        tx.addEventListener('complete', (ev) => {
+            console.log('Save Tx Complete. Check DB again.');
+            APP.checkDB(APP.keyword);
+        });
+    },
+    navigate: (keyword, id) => {
+        if (!id) {
+            window.location = `./results.html?keyword=${keyword}`;
+        } else {
+            window.location = `./suggest.html?id=${id}&title=${keyword}`;
+        }
     },
 }
 
