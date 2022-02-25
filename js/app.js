@@ -152,6 +152,8 @@ const APP = {
             let params = url.searchParams;
             console.log(params.has('keyword'), params.get('keyword'));
             keyword = params.get('keyword');
+            let h2 = document.querySelector('.h2');
+            h2.innerHTML = `Search results for <span class="keyword">"${keyword}"</span>`;
             APP.getSavedResult('searchStore', keyword);
         };
         if(document.body.id === 'suggest') {
@@ -162,6 +164,9 @@ const APP = {
             APP.title = title;
             console.log(movieId);
             console.log(title);
+            let h2 = document.querySelector('.h2');
+            h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
+            APP.getSavedResult('suggestStore', movieId);
         };
     },
     getSavedResult: (storeName, key) => {
@@ -171,7 +176,14 @@ const APP = {
         getRequest.addEventListener('success', (ev) => {
             APP.results = ev.target.result.value;
             APP.keyword = key;
+            console.log(key);
             console.log(APP.results);
+            if (parseInt(key) === 'NaN') {
+                APP.keyword = key;
+            } else {
+                APP.keyword = APP.title;
+            }
+            console.log(APP.keyword);
             APP.displayCards();
         });
         getRequest.addEventListener('error', (err) => {
@@ -179,8 +191,6 @@ const APP = {
         });
     },
     displayCards: () => {
-        let h2 = document.querySelector('.h2');
-        h2.innerHTML = `Search results for <span class="keyword">"${APP.keyword}"</span>`;
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
         let ulContent = APP.results.map((item) => {
