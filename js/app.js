@@ -59,7 +59,7 @@ const APP = {
         ev.preventDefault();
         let input = document.getElementById('search').value.trim();
         if (!input) return;
-        APP.checkDBforMatch(input);
+        APP.checkSearchStore(input);
     },
     createTx: (storeName) => {
         let tx = APP.DB.transaction(storeName, 'readwrite');
@@ -71,7 +71,7 @@ const APP = {
         });
         return tx;
     },
-    checkDBforMatch: (keyword) => {
+    checkSearchStore: (keyword) => {
         let tx = APP.createTx('searchStore');
         let store = tx.objectStore('searchStore');
         let check = store.get(keyword);
@@ -121,7 +121,11 @@ const APP = {
         let saveRequest = store.add(keyValue);
         saveRequest.addEventListener('success', (ev) => {
             console.log('Save success');
-            APP.checkDBforMatch(APP.keyword);
+            if (storeName === 'searchStore') {
+                APP.checkSearchStore(APP.keyword);
+            } else {
+                APP.checkSuggestStore(keyValue.movieId);
+            }
         });
         saveRequest.addEventListener('error', (err) => {
             console.warn(err);
@@ -211,9 +215,9 @@ const APP = {
             let checkResult = ev.target.result;
             if (checkResult === undefined) {
                 console.log(`Check success. ${id} is not found in suggestStore`);
-                APP.fetchSuggestedMovie(id);
+                APP.fetchSuggestedMovies(id);
             } else {
-                console.log(`${keyword} exists in searchStore`);
+                console.log(`${keyword} exists in suggestStore`);
                 APP.navigate(keyword, id);
             };
         });
@@ -221,8 +225,31 @@ const APP = {
             console.warn(err);
         });
     },
-    fetchSuggestedMovie: (id) => {
-        
+    fetchSuggestedMovies: (id) => {
+        let url = ''.concat(APP.baseURL, `/movie/${id}/similar?api_key=`, APP.apiKey);
+        fetch (url, {
+            method: 'GET'
+        })
+        .then (response => {
+            if (response.status >= 400) {
+                throw new NetworkError(`Failed to fetch to ${url}`, response.status, response.statusText);
+            }
+            return response.json()
+        })
+        .then (data => {
+            let value = data.results.map(item => {
+                let {id, original_title, overview, poster_path, release_date, popularity, vote_average} = item;
+                return {id, original_title, overview, poster_path, release_date, popularity, vote_average};
+            });
+            let movieId = id;
+            let title = APP.keyword;
+            let keyValue = { movieId, title, value }
+            console.log(keyValue);
+            APP.saveToDB(keyValue, 'suggestStore');
+        })
+        .catch (err => {
+            console.warn(err);
+        });
     },
 }
 
