@@ -7,11 +7,12 @@ const APP = {
     baseImgURL: 'https://image.tmdb.org/t/p/',
     apiKey: 'aa35c0e1a509278f9804efb52b014afa',
     keyword: '',
+    title: '',
     results: [],
     init: () => {
-        APP.openDB();
+        APP.openDB(APP.registerSW);
     },
-    openDB: () => {
+    openDB: (next) => {
         let openDBreq = indexedDB.open('movieDB', 3);
         openDBreq.addEventListener('upgradeneeded', (ev) => {
             APP.DB = ev.target.result;
@@ -32,7 +33,7 @@ const APP = {
         });
         openDBreq.addEventListener('success', (ev) => {
             APP.DB = ev.target.result;
-            APP.registerSW();
+            next = APP.registerSW();
         });
         openDBreq.addEventListener('error', (err) => {
             console.warn(err);
@@ -53,7 +54,10 @@ const APP = {
         document.querySelector('.header').addEventListener('click', () => {
             window.location = './index.html';
         });
-        //document.querySelector('.cards').addEventListener('click', APP.getMovieId);
+        let cards = document.querySelector('.cards');
+        if (cards) {
+            cards.addEventListener('click', APP.getMovieId);
+        };
     },
     searchSubmitted: (ev) => {
         ev.preventDefault();
@@ -152,7 +156,12 @@ const APP = {
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
-            console.log(APP.DB);
+            let url = window.location.search;
+            let movieId = url.split('=')[1].split('&').shift();
+            let title = url.split('=').pop().replaceAll('%27',`'`).replaceAll('%20', ' ');
+            APP.title = title;
+            console.log(movieId);
+            console.log(title);
         };
     },
     getSavedResult: (storeName, key) => {
@@ -204,8 +213,8 @@ const APP = {
         let clicked = ev.target.closest('.card');
         let movieId = clicked.children[1].dataset.movieid;
         let title = clicked.children[1].textContent;
-        let keyword = title.slice(7, title.length);
-        console.log(movieId, keyword);
+        APP.title = title.slice(7, title.length);
+        console.log(movieId, APP.title);
         APP.checkSuggestStore(movieId);
     },
     checkSuggestStore: (id) => {
@@ -215,11 +224,11 @@ const APP = {
         checkId.addEventListener('success', (ev) => {
             let checkResult = ev.target.result;
             if (checkResult === undefined) {
-                console.log(`Check success. ${id} is not found in suggestStore`);
+                console.log(`${id} is not found in suggestStore`);
                 APP.fetchSuggestedMovies(id);
             } else {
-                console.log(`${keyword} exists in suggestStore`);
-                APP.navigate(keyword, id);
+                console.log(`${id} exists in suggestStore`);
+                APP.navigate(APP.title, id);
             };
         });
         checkId.addEventListener('error', (err) => {
@@ -243,7 +252,7 @@ const APP = {
                 return {id, original_title, overview, poster_path, release_date, popularity, vote_average};
             });
             let movieId = id;
-            let title = APP.keyword;
+            let title = APP.title;
             let keyValue = { movieId, title, value }
             console.log(keyValue);
             APP.saveToDB(keyValue, 'suggestStore');
