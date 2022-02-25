@@ -1,7 +1,7 @@
-const version = 2;
+const version = 3;
 const staticName = `PWA-Static-Movie-APP-${version}`;
 const dynamicName = `PWA-Dynamic-Movie-APP-${version}`;
-const cacheLimit = 20;
+const cacheLimit = 40;
 const cacheList = [
     '/',
     '/index.html',
@@ -66,6 +66,7 @@ self.addEventListener('fetch', (ev) => {
                     .catch((err) => {
                         console.log('SW fetch failed.');
                         console.warn(err);
+                        console.log(ev.request.mode);
                         if (ev.request.mode == 'navigate') {
                             return caches.match('/404.html').then((page404Response) => {
                                 return page404Response;
@@ -78,11 +79,10 @@ self.addEventListener('fetch', (ev) => {
 });
 
 self.addEventListener('message', (ev) => {
-    //check ev.data to get the message
-    console.log(ev.data);
-    if (ev.data.ONLINE) {
-        isOnline = ev.data.ONLINE;
-        console.log(isOnline);
+    if (ev.data.ONLINE === true) {
+        console.log('You are online.')
+    } else {
+        console.log('You are offline.')
     }
 });
 
@@ -94,17 +94,6 @@ function sendMessage(msg){
         }
     })
 };
-
-// function limitCacheSize (name, size) {
-//     return caches.open(name).then(cache => {
-//         return cache.keys().then(keys => {
-//             if(keys.length > size) {
-//                 return cache.delete(keys[0]).then(()=>{return limitCacheSize(name,size)});
-//             }
-//         })
-//     })
-//     //remove some files from the dynamic cache
-// }
 
 function limitCacheSize (name, size) {
     caches.open(name).then(cache => {

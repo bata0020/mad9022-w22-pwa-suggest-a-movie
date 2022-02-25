@@ -2,7 +2,7 @@
 const APP = {
     DB: null,
     SW: null,
-    isONLINE: 'onLine' in navigator && navigator.onLine,
+    isOnline: 'onLine' in navigator && navigator.onLine,
     baseURL: 'https://api.themoviedb.org/3/',
     baseImgURL: 'https://image.tmdb.org/t/p/',
     apiKey: 'aa35c0e1a509278f9804efb52b014afa',
@@ -50,6 +50,9 @@ const APP = {
         APP.pageSpecific();
     },
     addListeners: () => {
+        window.addEventListener('online', APP.onlineStatus);
+        window.addEventListener('offline', APP.onlineStatus);
+        navigator.serviceWorker.addEventListener('message', APP.gotMsg);
         document.getElementById('searchForm').addEventListener('submit', APP.searchSubmitted);
         document.querySelector('.header').addEventListener('click', () => {
             window.location = './index.html';
@@ -58,6 +61,13 @@ const APP = {
         if (cards) {
             cards.addEventListener('click', APP.getMovieId);
         };
+    },
+    onlineStatus: (ev) => {
+        APP.isOnline = ev.type === 'online' ? true : false;
+        APP.SW.postMessage({ ONLINE: APP.isOnline });
+    },
+    gotMsg: (ev) => {
+        console.log(ev);
     },
     searchSubmitted: (ev) => {
         ev.preventDefault();
