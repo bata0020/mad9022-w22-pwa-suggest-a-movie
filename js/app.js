@@ -53,7 +53,7 @@ const APP = {
         document.querySelector('.header').addEventListener('click', () => {
             window.location = './index.html';
         });
-        document.querySelector('.cards').addEventListener('click', APP.getMovieId);
+        //document.querySelector('.cards').addEventListener('click', APP.getMovieId);
     },
     searchSubmitted: (ev) => {
         ev.preventDefault();
@@ -152,6 +152,7 @@ const APP = {
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
+            console.log(APP.DB);
         };
     },
     getSavedResult: (storeName, key) => {
