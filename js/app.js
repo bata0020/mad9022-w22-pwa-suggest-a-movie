@@ -124,7 +124,7 @@ const APP = {
         let saveRequest = store.add(keyValue);
         saveRequest.addEventListener('success', (ev) => {
             console.log('Save success');
-            APP.checkDB(APP.keyword);
+            APP.checkDBforMatch(APP.keyword);
         });
         saveRequest.addEventListener('error', (err) => {
             console.warn(err);
