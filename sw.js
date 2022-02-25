@@ -1,4 +1,4 @@
-const version = 1;
+const version = 2;
 const staticName = `PWA-Static-Movie-APP-${version}`;
 const dynamicName = `PWA-Dynamic-Movie-APP-${version}`;
 const cacheLimit = 20;
@@ -11,11 +11,13 @@ const cacheList = [
     '/css/main.css',
     '/js/app.js',
     '/manifest.json',
+    '/favicon.ico',
     '/img/android-chrome-192x192.png',
     '/img/android-chrome-512x512.png',
     '/img/apple-touch-icon.png',
     '/img/favicon-32x32.png',
     '/img/favicon-16x16.png',
+    '/img/tmdb-logo.sgv',
     'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
 ];
 
