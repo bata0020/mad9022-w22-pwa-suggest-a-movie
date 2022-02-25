@@ -53,6 +53,7 @@ const APP = {
         document.querySelector('.header').addEventListener('click', () => {
             window.location = './index.html';
         });
+        document.querySelector('.cards').addEventListener('click', APP.getMovieId);
     },
     searchSubmitted: (ev) => {
         ev.preventDefault();
@@ -79,13 +80,9 @@ const APP = {
             if (checkResult === undefined) {
                 console.log(`Check success. ${keyword} is not found in searchStore`);
                 APP.fetchMovieDB(keyword);
-                // if does not exists do a fetch from api
             } else {
                 console.log(`${keyword} exists in searchStore`);
-                // APP.results = ev.target.result;
-                // console.log(APP.results);
                 APP.navigate(keyword);
-                //APP.getSavedResult('searchStore', keyword);
             };
         });
         check.addEventListener('error', (err) => {
@@ -184,8 +181,8 @@ const APP = {
             img.src = ''.concat(APP.baseImgURL, 'w780', item.poster_path);
             img.alt = item.original_title;
             title.textContent = `Title: ${item.original_title}`;
-            title.setAttribute('data-movieId', item.id);
             title.classList.add('title');
+            title.setAttribute('data-movieId', item.id)
             releaseDate.textContent = `Release Date: ${item.release_date}`;
             vote.textContent = `Average Vote: ${item.vote_average}`;
             vote.classList.add('vote');
@@ -197,6 +194,35 @@ const APP = {
             return li;
         });
         ul.append(...ulContent);
+    },
+    getMovieId: (ev) => {
+        let clicked = ev.target.closest('.card');
+        let movieId = clicked.children[1].dataset.movieid;
+        let title = clicked.children[1].textContent;
+        let keyword = title.slice(7, title.length);
+        console.log(movieId, keyword);
+        APP.checkSuggestStore(movieId);
+    },
+    checkSuggestStore: (id) => {
+        let tx = APP.createTx('suggestStore');
+        let store = tx.objectStore('suggestStore');
+        let checkId = store.get(id);
+        checkId.addEventListener('success', (ev) => {
+            let checkResult = ev.target.result;
+            if (checkResult === undefined) {
+                console.log(`Check success. ${id} is not found in suggestStore`);
+                APP.fetchSuggestedMovie(id);
+            } else {
+                console.log(`${keyword} exists in searchStore`);
+                APP.navigate(keyword, id);
+            };
+        });
+        checkId.addEventListener('error', (err) => {
+            console.warn(err);
+        });
+    },
+    fetchSuggestedMovie: (id) => {
+        
     },
 }
 
