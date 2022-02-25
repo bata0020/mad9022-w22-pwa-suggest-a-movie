@@ -1,4 +1,4 @@
-const version = 2
+const version = 7
 const staticName = `PWA-Static-Movie-APP-${version}`;
 const dynamicName = `PWA-Dynamic-Movie-APP-${version}`;
 const cacheLimit = 40;
@@ -16,6 +16,7 @@ const cacheList = [
     '/img/apple-touch-icon.png',
     '/img/favicon-32x32.png',
     '/img/favicon-16x16.png',
+    '/img/default.jpg',
     'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
 ];
 
@@ -55,7 +56,6 @@ self.addEventListener('fetch', (ev) => {
                 cacheRes ||
                 fetch(ev.request)
                     .then((fetchRes) => {
-                        if (fetchRes.status > 399) throw new Error(fetchRes.statusText);
                         return caches.open(dynamicName).then((cache) => {
                             let copy = fetchRes.clone();
                             cache.put(ev.request, copy);
