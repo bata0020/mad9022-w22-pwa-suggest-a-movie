@@ -167,8 +167,15 @@ ul {
 }
 
 .list li {
-    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
     cursor: pointer;
+    color: #0645ad;
+    display: block;
+}
+
+.list li:hover {
+    font-style: italic;
+    color: #7b2d2d;
 }
 
 @media only screen and (min-width: 45em) {

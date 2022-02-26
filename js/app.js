@@ -182,7 +182,7 @@ const APP = {
         if(document.body.id === 'fourohfour') {
             console.log('Oh no! You got a 404!');
             let dataList = document.querySelector('.list');
-            dataList.innerHTML = '';
+            dataList.innerHTML = 'Recently searched keywords:';
             let tx = APP.createTx('searchStore');
             let store = tx.objectStore('searchStore');
             let getAll = store.getAll();
