@@ -106,7 +106,7 @@ button:hover {
 }
 
 .keyword {
-    color: #ff6666;
+    color: #7b2d2d;
 }
 
 ul {
@@ -142,6 +142,19 @@ ul {
 
 .title {
     padding-top: 0.5rem;
+}
+
+.error {
+    padding: 11rem 1rem 1rem;
+    width: 100%;
+    max-width: 80em;
+    margin: 0 auto;
+}
+
+.error h2 {
+    text-align: left;
+    padding: 0;
+    color: #7b2d2d;
 }
 
 @media only screen and (min-width: 45em) {
