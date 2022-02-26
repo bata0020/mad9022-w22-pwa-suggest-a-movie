@@ -61,6 +61,10 @@ const APP = {
         if (cards) {
             cards.addEventListener('click', APP.getMovieId);
         };
+        let list = document.querySelector('.list');
+        if (list) {
+            list.addEventListener('click', APP.getClicked);
+        }
     },
     onlineStatus: (ev) => {
         APP.isOnline = ev.type === 'online' ? true : false;
@@ -310,6 +314,10 @@ const APP = {
             console.warn(err);
         });
     },
+    getClicked: (ev) => {
+        let clicked = ev.target.closest('li');
+        APP.checkSearchStore(clicked.textContent);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', APP.init);
