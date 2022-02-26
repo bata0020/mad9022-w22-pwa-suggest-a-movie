@@ -160,14 +160,10 @@ const APP = {
             console.log('Now in results page');
             let url = new URL(window.location.href);
             let params = url.searchParams;
-            console.log(params.has('keyword'), params.get('keyword'));
             keyword = params.get('keyword');
-            let h2 = document.querySelector('.h2');
-            h2.innerHTML = `Search results for <span class="keyword">"${keyword}"</span>`;
-            APP.keyword = keyword;
+            //APP.keyword = keyword;
             APP.getSavedResult('searchStore', keyword);
-            console.log(APP.keyword);
-            console.log(APP.title);
+            console.log(`Keyword is: ${APP.keyword}`);
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
@@ -177,11 +173,8 @@ const APP = {
             APP.title = title; // do i need this?
             console.log(movieId);
             console.log(title);
-            let h2 = document.querySelector('.h2');
-            h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
             APP.getSavedResult('suggestStore', movieId);
-            console.log(APP.keyword);
-            console.log(APP.title);
+            console.log(`Title is: ${APP.title}`);
         };
     },
     getSavedResult: (storeName, key) => {
@@ -191,7 +184,8 @@ const APP = {
         getRequest.addEventListener('success', (ev) => {
             APP.results = ev.target.result.value;
             APP.keyword = key;
-            console.log(key);
+            console.log(`searchStore has results for keyword: ${key}`);
+            console.log(`suggestStore has results for id: ${key} and title: ${APP.title}`);
             console.log(APP.results);
             // if (parseInt(key) === 'NaN') {
             //     APP.keyword = key;
@@ -200,16 +194,25 @@ const APP = {
             //     APP.keyword = APP.title;
             //     console.log(APP.keyword)
             // }
-            APP.displayCards();
+            APP.displayCards(APP.keyword, APP.title);
         });
         getRequest.addEventListener('error', (err) => {
             console.warn(err);
         });
     },
-    displayCards: () => {
-        console.log(APP.keyword);
-        console.log(APP.title);
+    displayCards: (keyOrId, title) => {
+        console.log(`Keyword/movie id value: ${keyOrId}`);
+        console.log(`Title value: ${title}`);
+        console.log(`Results length: ${APP.results.length}`);
         let h2 = document.querySelector('.h2');
+        if (!title) {
+            h2.innerHTML = `Search results for <span class="keyword">"${keyOrId}"</span>`;
+        } else {
+            h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
+        };
+        if (APP.results.length === 0) {
+            h2.innerHTML = `No results for <span class="keyword">"${keyOrId}"</span>`;
+        };
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
         let ulContent = APP.results.map((item) => {
