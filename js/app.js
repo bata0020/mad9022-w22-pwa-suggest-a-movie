@@ -163,24 +163,25 @@ const APP = {
             console.log(params.has('keyword'), params.get('keyword'));
             keyword = params.get('keyword');
             let h2 = document.querySelector('.h2');
-            if (APP.results.length != 0) {
-                h2.innerHTML = `Search results for <span class="keyword">"${keyword}"</span>`;
-            } else {
-                h2.innerHTML = `There are no results for <span class="keyword">"${keyword}"</span>`;
-            }
+            h2.innerHTML = `Search results for <span class="keyword">"${keyword}"</span>`;
+            APP.keyword = keyword;
             APP.getSavedResult('searchStore', keyword);
+            console.log(APP.keyword);
+            console.log(APP.title);
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
             let url = window.location.search;
             let movieId = url.split('=')[1].split('&').shift();
             let title = url.split('=').pop().replaceAll('%27',`'`).replaceAll('%20', ' ');
-            APP.title = title;
+            APP.title = title; // do i need this?
             console.log(movieId);
             console.log(title);
             let h2 = document.querySelector('.h2');
             h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
             APP.getSavedResult('suggestStore', movieId);
+            console.log(APP.keyword);
+            console.log(APP.title);
         };
     },
     getSavedResult: (storeName, key) => {
@@ -192,11 +193,13 @@ const APP = {
             APP.keyword = key;
             console.log(key);
             console.log(APP.results);
-            if (parseInt(key) === 'NaN') {
-                APP.keyword = key;
-            } else {
-                APP.keyword = APP.title;
-            }
+            // if (parseInt(key) === 'NaN') {
+            //     APP.keyword = key;
+            //     console.log(APP.keyword)
+            // } else {
+            //     APP.keyword = APP.title;
+            //     console.log(APP.keyword)
+            // }
             APP.displayCards();
         });
         getRequest.addEventListener('error', (err) => {
@@ -204,6 +207,9 @@ const APP = {
         });
     },
     displayCards: () => {
+        console.log(APP.keyword);
+        console.log(APP.title);
+        let h2 = document.querySelector('.h2');
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
         let ulContent = APP.results.map((item) => {
