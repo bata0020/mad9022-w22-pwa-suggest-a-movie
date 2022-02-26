@@ -130,6 +130,7 @@ button:hover {
     border-bottom: 0.125rem solid #1e354c;
     border-top-left-radius: 0.45rem;
     border-top-right-radius: 0.45rem;
+    width: 100%;
 }
 .cards p {
     margin: 0;
@@ -160,6 +161,12 @@ button:hover {
     #search {
         font-size: 1.1rem;
     }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem
+    }
 }
 
 @media only screen and (min-width: 60em) {
@@ -184,5 +191,10 @@ button:hover {
 
     p {
         font-size: 1.1rem;
+    }
+
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 1fr;
     }
 }
