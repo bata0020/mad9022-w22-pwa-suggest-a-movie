@@ -176,6 +176,23 @@ const APP = {
             APP.getSavedResult('suggestStore', movieId);
             console.log(`Title is: ${APP.title}`);
         };
+        if(document.body.id === 'fourohfour') {
+            console.log('Oh no! You got a 404!');
+            let dataList = document.querySelector('.list');
+            dataList.innerHTML = '';
+            let tx = APP.createTx('searchStore');
+            let store = tx.objectStore('searchStore');
+            let getAll = store.getAll();
+            getAll.addEventListener('success', (ev) => {
+                let results = ev.target.result;
+                let listContent = results.map((item) => {
+                    let li = document.createElement('li');
+                    li.append(item.keyword);
+                    return li;
+                });
+                dataList.append(...listContent);
+            });
+        }
     },
     getSavedResult: (storeName, key) => {
         let tx = APP.createTx(storeName);
