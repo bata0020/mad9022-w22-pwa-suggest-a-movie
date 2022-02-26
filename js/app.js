@@ -52,19 +52,15 @@ const APP = {
     addListeners: () => {
         window.addEventListener('online', APP.onlineStatus);
         window.addEventListener('offline', APP.onlineStatus);
-        navigator.serviceWorker.addEventListener('message', APP.gotMsg);
+        navigator.serviceWorker.addEventListener('message', APP.gotMsg);// is this needed?
         document.getElementById('searchForm').addEventListener('submit', APP.searchSubmitted);
         document.querySelector('.header').addEventListener('click', () => {
             window.location = './index.html';
         });
         let cards = document.querySelector('.cards');
-        if (cards) {
-            cards.addEventListener('click', APP.getMovieId);
-        };
+        if (cards) { cards.addEventListener('click', APP.getMovieId) };
         let list = document.querySelector('.list');
-        if (list) {
-            list.addEventListener('click', APP.getClicked);
-        }
+        if (list) { list.addEventListener('click', APP.getClicked) };
     },
     onlineStatus: (ev) => {
         APP.isOnline = ev.type === 'online' ? true : false;
@@ -96,10 +92,10 @@ const APP = {
         check.addEventListener('success', (ev) => {
             let checkResult = ev.target.result;
             if (checkResult === undefined) {
-                console.log(`Check success. ${keyword} is not found in searchStore`);
+                console.log(`Checked searchStore. ${keyword} is not found.`);
                 APP.fetchMovieDB(keyword);
             } else {
-                console.log(`${keyword} exists in searchStore`);
+                console.log(`Checked searchStore. ${keyword} exists.`);
                 APP.navigate(keyword);
             };
         });
@@ -113,9 +109,10 @@ const APP = {
             method: 'GET'
         })
         .then (response => {
-            if (response.status >= 400) {
+            if (response.status > 399) {
                 throw new NetworkError(`Failed to fetch to ${url}`, response.status, response.statusText);
             }
+            console.log(response.status);
             return response.json()
         })
         .then (data => {
@@ -125,8 +122,10 @@ const APP = {
             });
             let keyword = endpoint;
             let keyValue = { keyword, value }
-            console.log(keyValue);
+            console.log(keyValue); // do i need this?
             APP.keyword = endpoint;
+            console.log(data.results.length)
+            if (data.results.length === 0) return APP.displayCards(keyword);
             APP.saveToDB(keyValue, 'searchStore');
         })
         .catch (err => {
@@ -167,7 +166,7 @@ const APP = {
             keyword = params.get('keyword');
             //APP.keyword = keyword;
             APP.getSavedResult('searchStore', keyword);
-            console.log(`Keyword is: ${APP.keyword}`);
+            console.log(`Keyword is: ${APP.keyword}`); //??
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
@@ -205,9 +204,9 @@ const APP = {
         getRequest.addEventListener('success', (ev) => {
             APP.results = ev.target.result.value;
             APP.keyword = key;
-            console.log(`searchStore has results for keyword: ${key}`);
-            console.log(`suggestStore has results for id: ${key} and title: ${APP.title}`);
-            console.log(APP.results);
+            console.log(`searchStore has results for keyword: ${key}`); //??
+            console.log(`suggestStore has results for id: ${key} and title: ${APP.title}`); //??
+            console.log(APP.results); // ??
             // if (parseInt(key) === 'NaN') {
             //     APP.keyword = key;
             //     console.log(APP.keyword)
@@ -222,8 +221,8 @@ const APP = {
         });
     },
     displayCards: (keyOrId, title) => {
-        console.log(`Keyword/movie id value: ${keyOrId}`);
-        console.log(`Title value: ${title}`);
+        console.log(`Keyword/movie id is: ${keyOrId}`); //??
+        console.log(`Title is: ${title}`); //??
         console.log(`Results length: ${APP.results.length}`);
         let h2 = document.querySelector('.h2');
         if (!title) {
@@ -232,7 +231,7 @@ const APP = {
             h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
         };
         if (APP.results.length === 0) {
-            h2.innerHTML = `No results for <span class="keyword">"${keyOrId}"</span>`;
+            h2.innerHTML = `No matching results for <span class="keyword">"${keyOrId}"</span>`;
         };
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
@@ -267,7 +266,7 @@ const APP = {
         let movieId = clicked.children[1].dataset.movieid;
         let title = clicked.children[1].textContent;
         APP.title = title.slice(7, title.length);
-        console.log(movieId, APP.title);
+        console.log(movieId, APP.title); //??
         APP.checkSuggestStore(movieId);
     },
     checkSuggestStore: (id) => {
@@ -307,7 +306,7 @@ const APP = {
             let movieId = id;
             let title = APP.title;
             let keyValue = { movieId, title, value }
-            console.log(keyValue);
+            console.log(keyValue); //??
             APP.saveToDB(keyValue, 'suggestStore');
         })
         .catch (err => {
