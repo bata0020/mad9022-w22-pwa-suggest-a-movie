@@ -157,6 +157,15 @@ ul {
     color: #7b2d2d;
 }
 
+.list {
+    padding-left: 0;
+}
+
+.list li {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 45em) {
     .header {
         gap: 2rem;
