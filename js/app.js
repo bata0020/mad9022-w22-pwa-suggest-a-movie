@@ -163,7 +163,11 @@ const APP = {
             console.log(params.has('keyword'), params.get('keyword'));
             keyword = params.get('keyword');
             let h2 = document.querySelector('.h2');
-            h2.innerHTML = `Search results for <span class="keyword">"${keyword}"</span>`;
+            if (APP.results.length != 0) {
+                h2.innerHTML = `Search results for <span class="keyword">"${keyword}"</span>`;
+            } else {
+                h2.innerHTML = `There are no results for <span class="keyword">"${keyword}"</span>`;
+            }
             APP.getSavedResult('searchStore', keyword);
         };
         if(document.body.id === 'suggest') {
@@ -193,7 +197,6 @@ const APP = {
             } else {
                 APP.keyword = APP.title;
             }
-            console.log(APP.keyword);
             APP.displayCards();
         });
         getRequest.addEventListener('error', (err) => {

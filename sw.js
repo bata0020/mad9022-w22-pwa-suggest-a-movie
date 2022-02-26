@@ -1,4 +1,4 @@
-const version = 7
+const version = 6;
 const staticName = `PWA-Static-Movie-APP-${version}`;
 const dynamicName = `PWA-Dynamic-Movie-APP-${version}`;
 const cacheLimit = 40;
@@ -56,6 +56,7 @@ self.addEventListener('fetch', (ev) => {
                 cacheRes ||
                 fetch(ev.request)
                     .then((fetchRes) => {
+                        if (fetchRes.status > 399) throw new Error(fetchRes.statusText);
                         return caches.open(dynamicName).then((cache) => {
                             let copy = fetchRes.clone();
                             cache.put(ev.request, copy);
@@ -64,12 +65,12 @@ self.addEventListener('fetch', (ev) => {
                         });
                     })
                     .catch((err) => {
-                        console.log('SW fetch failed.');
-                        console.warn(err);
+                        console.log('Fetch failed.', err);
+                        console.log(fetRes.status);
                         if (ev.request.mode == 'navigate') {
-                            return caches.match('./404.html').then((page404Response) => {
+                            return caches.match('/404.html').then((page404Response) => {
                                 return page404Response;
-                            });
+                            })
                         };
                     })
             );
@@ -85,8 +86,7 @@ self.addEventListener('message', (ev) => {
     }
 });
 
-function sendMessage(msg){
-    //send a message to the browser from the service worker
+function sendMessage(msg) {
     self.clients.matchAll().then(function (clients) {
         if (clients && clients.length) {
             clients[0].postMessage(msg);
@@ -102,10 +102,4 @@ function limitCacheSize (name, size) {
             }
         })
     })
-}
-
-function checkForConnection(){
-    //try to talk to a server and do a fetch() with HEAD method.
-    //to see if we are really online or offline
-    //send a message back to the browser
-}
+};
