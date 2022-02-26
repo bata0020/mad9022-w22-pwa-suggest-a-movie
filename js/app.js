@@ -224,7 +224,7 @@ const APP = {
             let vote = document.createElement('p');
             li.classList.add('flex');
             div.classList.add('card');
-            item.poster_path === null ? img.src = './img/default.jpg' : img.src = ''.concat(APP.baseImgURL, 'w780', item.poster_path);
+            item.poster_path === null ? img.src = './img/default.jpg' : img.src = ''.concat(APP.baseImgURL, 'w500', item.poster_path);
             img.alt = item.original_title;
             title.textContent = `Title: ${item.original_title}`;
             title.classList.add('title');
