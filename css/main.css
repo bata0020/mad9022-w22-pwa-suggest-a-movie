@@ -113,9 +113,6 @@ button:hover {
     list-style-type: none;
     margin: 0;
     padding: 0;
-}
-
-.flex {
     padding: 1rem 1rem 0;
 }
 
@@ -124,6 +121,8 @@ button:hover {
     background-color: #335c85;
     color: #fff;
     border-radius: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
 }
 
 .card img {
@@ -132,9 +131,10 @@ button:hover {
     border-top-right-radius: 0.45rem;
     width: 100%;
 }
+
 .cards p {
     margin: 0;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
     text-align: center;
 }
 
@@ -165,7 +165,7 @@ button:hover {
     .cards {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem
+        gap: 1rem
     }
 }
 
@@ -195,6 +195,5 @@ button:hover {
 
     .cards {
         grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: 1fr;
     }
 }
