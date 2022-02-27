@@ -112,7 +112,6 @@ const APP = {
             if (response.status > 399) {
                 throw new NetworkError(`Failed to fetch to ${url}`, response.status, response.statusText);
             }
-            console.log(response.status);
             return response.json()
         })
         .then (data => {
@@ -122,9 +121,7 @@ const APP = {
             });
             let keyword = endpoint;
             let keyValue = { keyword, value }
-            console.log(keyValue); // do i need this?
             APP.keyword = endpoint;
-            console.log(data.results.length)
             if (data.results.length === 0) return APP.displayCards(keyword);
             APP.saveToDB(keyValue, 'searchStore');
         })
@@ -137,7 +134,6 @@ const APP = {
         let store = tx.objectStore(storeName);
         let saveRequest = store.add(keyValue);
         saveRequest.addEventListener('success', (ev) => {
-            console.log('Save success');
             if (storeName === 'searchStore') {
                 APP.checkSearchStore(APP.keyword);
             } else {
@@ -157,7 +153,7 @@ const APP = {
     },
     pageSpecific: () => {
         if(document.body.id === 'home') {
-            console.log('You are in Home Page');
+            console.log('Now in Home Page');
             let dataList = document.querySelector('.list');
             let tx = APP.createTx('searchStore');
             let store = tx.objectStore('searchStore');
@@ -177,10 +173,8 @@ const APP = {
             let url = new URL(window.location.href);
             let params = url.searchParams;
             keyword = params.get('keyword');
-            //APP.keyword = keyword;
             APP.getSavedResult('searchStore', keyword);
             document.title = `Searched for ${keyword}`
-            console.log(`Keyword is: ${APP.keyword}`); //??
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
@@ -188,11 +182,8 @@ const APP = {
             let movieId = url.split('=')[1].split('&').shift();
             let title = url.split('=').pop().replaceAll('%27',`'`).replaceAll('%20', ' ');
             APP.title = title; // do i need this?
-            console.log(movieId);
-            console.log(title);
             APP.getSavedResult('suggestStore', movieId);
             document.title = `Suggested results for ${title}`
-            console.log(`Title is: ${APP.title}`);
         };
         if(document.body.id === 'fourohfour') {
             console.log('Oh no! You got a 404!');
@@ -218,16 +209,12 @@ const APP = {
         getRequest.addEventListener('success', (ev) => {
             APP.results = ev.target.result.value;
             APP.keyword = key;
-            console.log(`searchStore has results for keyword: ${key}`); //??
-            console.log(`suggestStore has results for id: ${key} and title: ${APP.title}`); //??
-            console.log(APP.results); // ??
-            // if (parseInt(key) === 'NaN') {
-            //     APP.keyword = key;
-            //     console.log(APP.keyword)
-            // } else {
-            //     APP.keyword = APP.title;
-            //     console.log(APP.keyword)
-            // }
+            if (!APP.title) {
+                console.log(`searchStore has results for keyword: ${key}`);
+            } else {
+                console.log(`suggestStore has results for id: ${key} and title: ${APP.title}`);
+            }
+            console.log(APP.results);
             APP.displayCards(APP.keyword, APP.title);
         });
         getRequest.addEventListener('error', (err) => {
@@ -235,9 +222,6 @@ const APP = {
         });
     },
     displayCards: (keyOrId, title) => {
-        console.log(`Keyword/movie id is: ${keyOrId}`); //??
-        console.log(`Title is: ${title}`); //??
-        console.log(`Results length: ${APP.results.length}`);
         let h2 = document.querySelector('.h2');
         if (!title) {
             h2.innerHTML = `Search results for <span class="keyword">"${keyOrId}"</span>`;
@@ -280,7 +264,6 @@ const APP = {
         let movieId = clicked.children[1].dataset.movieid;
         let title = clicked.children[1].textContent;
         APP.title = title.slice(7, title.length);
-        console.log(movieId, APP.title); //??
         APP.checkSuggestStore(movieId);
     },
     checkSuggestStore: (id) => {
@@ -290,10 +273,10 @@ const APP = {
         checkId.addEventListener('success', (ev) => {
             let checkResult = ev.target.result;
             if (checkResult === undefined) {
-                console.log(`${id} is not found in suggestStore`);
+                console.log(`Checked suggestStore. ${id} is not found.`);
                 APP.fetchSuggestedMovies(id);
             } else {
-                console.log(`${id} exists in suggestStore`);
+                console.log(`Checked suggestStore. ${id} exists.`);
                 APP.navigate(APP.title, id);
             };
         });
@@ -320,7 +303,6 @@ const APP = {
             let movieId = id;
             let title = APP.title;
             let keyValue = { movieId, title, value }
-            console.log(keyValue); //??
             APP.saveToDB(keyValue, 'suggestStore');
         })
         .catch (err => {
