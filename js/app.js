@@ -158,6 +158,19 @@ const APP = {
     pageSpecific: () => {
         if(document.body.id === 'home') {
             console.log('You are in Home Page');
+            let dataList = document.querySelector('.list');
+            let tx = APP.createTx('searchStore');
+            let store = tx.objectStore('searchStore');
+            let getAll = store.getAll();
+            getAll.addEventListener('success', (ev) => {
+                let results = ev.target.result;
+                let listContent = results.map((item) => {
+                    let li = document.createElement('li');
+                    li.append(item.keyword);
+                    return li;
+                });
+                dataList.append(...listContent);
+            });
         };
         if(document.body.id === 'results') {
             console.log('Now in results page');
@@ -166,6 +179,7 @@ const APP = {
             keyword = params.get('keyword');
             //APP.keyword = keyword;
             APP.getSavedResult('searchStore', keyword);
+            document.title = `Searched for ${keyword}`
             console.log(`Keyword is: ${APP.keyword}`); //??
         };
         if(document.body.id === 'suggest') {
@@ -177,12 +191,12 @@ const APP = {
             console.log(movieId);
             console.log(title);
             APP.getSavedResult('suggestStore', movieId);
+            document.title = `Suggested results for ${title}`
             console.log(`Title is: ${APP.title}`);
         };
         if(document.body.id === 'fourohfour') {
             console.log('Oh no! You got a 404!');
             let dataList = document.querySelector('.list');
-            dataList.innerHTML = 'Recently searched keywords:';
             let tx = APP.createTx('searchStore');
             let store = tx.objectStore('searchStore');
             let getAll = store.getAll();

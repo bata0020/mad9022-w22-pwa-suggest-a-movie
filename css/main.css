@@ -144,20 +144,25 @@ ul {
     padding-top: 0.5rem;
 }
 
-.error {
+.error, .home {
     padding: 11rem 1rem 1rem;
     width: 100%;
-    max-width: 80em;
+    max-width: 60em;
     margin: 0 auto;
+    z-index: -100;
 }
 
-.error h2 {
+.error h2, .home h2 {
     text-align: left;
     padding: 0;
     color: #7b2d2d;
 }
 
-.error p {
+.home h2 {
+    color: #000;
+}
+
+.error p, .home p {
     padding-top: 1rem;
     margin: 0;
 }
