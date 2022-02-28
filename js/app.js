@@ -229,9 +229,6 @@ const APP = {
         } else {
             h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
         };
-        // if (APP.results.length === 0) {
-        //     h2.innerHTML = `No matching results for <span class="keyword">"${keyOrId}"</span>`;
-        // };
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
         let ulContent = APP.results.map((item) => {
