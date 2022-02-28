@@ -41,6 +41,7 @@ h2 {
     top: 0;
     width: 100%;
     box-shadow: 0 0 0.75rem #000;
+    z-index: 1000;
 }
 
 .header {
@@ -124,6 +125,9 @@ ul {
     cursor: pointer;
     margin-bottom: 1rem;
     box-shadow: 0 0 0.35rem #000;
+    transition: 
+        background-color 0.4s,
+        transform 0.4s;
 }
 
 .card img {
@@ -137,6 +141,10 @@ ul {
     margin: 0;
     padding: 0.5rem;
     text-align: center;
+}
+
+.card:hover {
+    background-color: #7b2d2d;
 }
 
 .error, .home {
@@ -222,6 +230,10 @@ ul {
 
     .error, .home {
         padding-top: 10rem;
+    }
+
+    .flex:hover {
+        transform: translateY(-0.125rem);
     }
 
     .cards {
