@@ -108,9 +108,7 @@ const APP = {
     },
     fetchMovieDB: (endpoint) => {
         let url = ''.concat(APP.baseURL, 'search/movie?api_key=', APP.apiKey, '&query=', endpoint);
-        fetch (url, {
-            method: 'GET'
-        })
+        fetch (url)
         .then (response => {
             if (response.status > 399) {
                 throw new NetworkError(`Failed to fetch to ${url}`, response.status, response.statusText);
@@ -284,11 +282,9 @@ const APP = {
     },
     fetchSuggestedMovies: (id) => {
         let url = ''.concat(APP.baseURL, `/movie/${id}/similar?api_key=`, APP.apiKey);
-        fetch (url, {
-            method: 'GET'
-        })
+        fetch (url)
         .then (response => {
-            if (response.status >= 400) {
+            if (response.status > 399) {
                 throw new NetworkError(`Failed to fetch to ${url}`, response.status, response.statusText);
             }
             return response.json()

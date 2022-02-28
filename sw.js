@@ -1,4 +1,4 @@
-const version = 3;
+const version = 7;
 const staticName = `PWA-Static-Movie-APP-${version}`;
 const dynamicName = `PWA-Dynamic-Movie-APP-${version}`;
 const cacheLimit = 40;
@@ -66,10 +66,9 @@ self.addEventListener('fetch', (ev) => {
                         });
                     })
                     .catch((err) => {
-                        console.log('Fetch failed.', err);
-                        sendMessage(err);
+                        console.log(err);
                         if (ev.request.mode == 'navigate') {
-                            return caches.match('/404.html').then((page404Response) => {
+                            return caches.match('404.html').then((page404Response) => {
                                 return page404Response;
                             })
                         };
