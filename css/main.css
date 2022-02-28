@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 
 html {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Nunito', sans-serif;
     box-sizing: border-box;
 }
 
@@ -179,7 +180,7 @@ ul {
 }
 
 .list li:hover {
-    font-style: italic;
+    font-weight: bold;
     color: #7b2d2d;
 }
 
@@ -237,6 +238,10 @@ ul {
     h2 {
         font-size: 2.441rem;
         padding-bottom: 0.5rem;
+    }
+
+    .error, .home {
+        padding-top: 12rem;
     }
 
     .contentArea {
