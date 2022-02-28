@@ -1,4 +1,4 @@
-const version = 7;
+const version = 9;
 const staticName = `PWA-Static-Movie-APP-${version}`;
 const dynamicName = `PWA-Dynamic-Movie-APP-${version}`;
 const cacheLimit = 40;
@@ -17,7 +17,8 @@ const cacheList = [
     '/img/favicon-32x32.png',
     '/img/favicon-16x16.png',
     '/img/default.jpg',
-    'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
+    '/img/tmdb-logo.svg',
+    'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap',
 ];
 
 self.addEventListener('install', (ev) => {

@@ -1,4 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 
 html {
@@ -38,7 +37,6 @@ h2 {
 .masthead {
     padding: 1rem;
     background-color: #1e354c;
-    /* background-color: #364559; */
     position: fixed;
     top: 0;
     width: 100%;
@@ -82,7 +80,7 @@ button:hover {
 #search {
     width: 100%;
     max-width: 25em;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Nunito', sans-serif;
     padding: 0.35rem;
     border-radius: 0.25rem;
     border: none;
@@ -93,7 +91,7 @@ button:hover {
 }
 
 ::placeholder {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Nunito', sans-serif;
     padding: 0.25rem;
     text-align: center;
 }
@@ -119,7 +117,6 @@ ul {
 
 .card {
     border: 0.125rem solid #1e354c;
-    /* background-color: #335c85; */
     background-color: #4D5D73;
     color: #fff;
     border-radius: 0.5rem;
@@ -185,9 +182,11 @@ ul {
 }
 
 @media only screen and (min-width: 45em) {
+
     .header {
         gap: 2rem;
     }
+
     .logo {
         max-width: 9rem;
     }
@@ -224,9 +223,11 @@ ul {
 }
 
 @media only screen and (min-width: 60em) {
+
     .header {
         gap: 4rem;
     }
+    
     .logo {
         max-width: 10rem;
     }
