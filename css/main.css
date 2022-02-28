@@ -52,7 +52,7 @@ h2 {
 }
 
 .logo {
-    max-width: 7rem;
+    max-width: 5rem;
 }
 
 .search {
@@ -101,7 +101,7 @@ button:hover {
     width: 100%;
     max-width: 90em;
     margin: 0 auto;
-    padding-top: 9rem;
+    padding-top: 7rem;
     z-index: -100;
 }
 
@@ -140,7 +140,7 @@ ul {
 }
 
 .error, .home {
-    padding: 11rem 1rem 1rem;
+    padding: 9rem 1rem 1rem;
     width: 100%;
     max-width: 60em;
     margin: 0 auto;
@@ -193,7 +193,7 @@ ul {
     }
 
     .logo {
-        max-width: 9rem;
+        max-width: 7rem;
     }
 
     h1 {
@@ -214,6 +214,14 @@ ul {
 
     .search {
         gap: 0.5rem;
+    }
+
+    .contentArea {
+        padding-top: 8.5rem;
+    }
+
+    .error, .home {
+        padding-top: 10rem;
     }
 
     .cards {
@@ -238,7 +246,7 @@ ul {
     }
 
     .logo {
-        max-width: 10rem;
+        max-width: 9rem;
     }
 
     h1 {
@@ -251,7 +259,7 @@ ul {
     }
 
     .error, .home {
-        padding-top: 12rem;
+        padding-top: 11rem;
     }
 
     .contentArea {
