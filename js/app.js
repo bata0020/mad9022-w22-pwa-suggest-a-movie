@@ -123,6 +123,7 @@ const APP = {
             let keyword = endpoint;
             let keyValue = { keyword, value }
             APP.keyword = endpoint;
+            APP.results = data.results;
             if (data.results.length === 0) return APP.displayCards(keyword);
             APP.saveToDB(keyValue, 'searchStore');
         })
