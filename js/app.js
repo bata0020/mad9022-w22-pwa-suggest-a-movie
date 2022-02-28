@@ -75,7 +75,7 @@ const APP = {
     searchSubmitted: (ev) => {
         ev.preventDefault();
         let input = document.getElementById('search').value.trim();
-        if (!input) return;
+        if (!input) return false;
         APP.checkSearchStore(input);
     },
     createTx: (storeName) => {
