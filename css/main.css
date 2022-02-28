@@ -35,8 +35,8 @@ h2 {
 }
 
 .masthead {
-    padding: 1rem;
     background-color: #1e354c;
+    padding: 1rem;
     position: fixed;
     top: 0;
     width: 100%;
@@ -116,8 +116,8 @@ ul {
 }
 
 .card {
-    border: 0.125rem solid #1e354c;
-    background-color: #4D5D73;
+    border: 0.125rem solid #191919;
+    background-color: #3c6a99;
     color: #fff;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -126,7 +126,7 @@ ul {
 }
 
 .card img {
-    border-bottom: 0.125rem solid #1e354c;
+    border-bottom: 0.125rem solid #191919;
     border-top-left-radius: 0.45rem;
     border-top-right-radius: 0.45rem;
     width: 100%;
@@ -227,7 +227,7 @@ ul {
     .header {
         gap: 4rem;
     }
-    
+
     .logo {
         max-width: 10rem;
     }
