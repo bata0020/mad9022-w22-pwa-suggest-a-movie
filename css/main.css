@@ -67,6 +67,7 @@ button {
     border: none;
     background-color: transparent;
     cursor: pointer;
+    padding: 0;
 }
 
 button:hover {
@@ -134,12 +135,8 @@ ul {
 
 .cards p {
     margin: 0;
-    padding-bottom: 1rem;
+    padding: 0.5rem;
     text-align: center;
-}
-
-.title {
-    padding-top: 0.5rem;
 }
 
 .error, .home {
@@ -181,6 +178,14 @@ ul {
     color: #7b2d2d;
 }
 
+#offline {
+    display: none;
+}
+
+#offline.offline {
+    display: contents;
+}
+
 @media only screen and (min-width: 45em) {
 
     .header {
@@ -205,6 +210,10 @@ ul {
 
     #search {
         font-size: 1.1rem;
+    }
+
+    .search {
+        gap: 0.5rem;
     }
 
     .cards {
@@ -246,10 +255,10 @@ ul {
     }
 
     .contentArea {
-        padding-top: 9.5rem;
+        padding-top: 10rem;
     }
 
-    #icon {
+    #icon, .material-icons {
         font-size: 2.488rem;
     }
 

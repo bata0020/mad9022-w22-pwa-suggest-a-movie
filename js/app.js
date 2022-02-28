@@ -11,6 +11,7 @@ const APP = {
     results: [],
     init: () => {
         APP.openDB(APP.registerSW);
+        APP.displayOffline();
     },
     openDB: (next) => {
         let openDBreq = indexedDB.open('movieDB', 3);
@@ -65,9 +66,15 @@ const APP = {
     onlineStatus: (ev) => {
         APP.isOnline = ev.type === 'online' ? true : false;
         APP.SW.postMessage({ ONLINE: APP.isOnline });
+        APP.displayOffline();
     },
-    gotMsg: (ev) => {
-        console.log(ev);
+    displayOffline: () => {
+        let display = document.getElementById('offline');
+        if (!APP.isOnline) {
+            display.classList.add('offline');
+        } else {
+            display.classList.remove('offline');
+        }
     },
     searchSubmitted: (ev) => {
         ev.preventDefault();
@@ -174,7 +181,7 @@ const APP = {
             let params = url.searchParams;
             keyword = params.get('keyword');
             APP.getSavedResult('searchStore', keyword);
-            document.title = `Searched for ${keyword}`
+            document.title = `Searched for ${keyword}`;
         };
         if(document.body.id === 'suggest') {
             console.log('Now in suggest page');
@@ -183,7 +190,7 @@ const APP = {
             let title = url.split('=').pop().replaceAll('%27',`'`).replaceAll('%20', ' ');
             APP.title = title; // do i need this?
             APP.getSavedResult('suggestStore', movieId);
-            document.title = `Suggested results for ${title}`
+            document.title = `Suggested results for ${title}`;
         };
         if(document.body.id === 'fourohfour') {
             console.log('Oh no! You got a 404!');
