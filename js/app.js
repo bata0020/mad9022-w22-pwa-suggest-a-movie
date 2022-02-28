@@ -53,7 +53,6 @@ const APP = {
     addListeners: () => {
         window.addEventListener('online', APP.onlineStatus);
         window.addEventListener('offline', APP.onlineStatus);
-        navigator.serviceWorker.addEventListener('message', APP.gotMsg);// is this needed?
         document.getElementById('searchForm').addEventListener('submit', APP.searchSubmitted);
         document.querySelector('.header').addEventListener('click', () => {
             window.location = './index.html';
@@ -70,11 +69,8 @@ const APP = {
     },
     displayOffline: () => {
         let display = document.getElementById('offline');
-        if (!APP.isOnline) {
-            display.classList.add('offline');
-        } else {
-            display.classList.remove('offline');
-        }
+        if (!APP.isOnline) return display.classList.add('offline');
+        return display.classList.remove('offline');
     },
     searchSubmitted: (ev) => {
         ev.preventDefault();
@@ -152,11 +148,8 @@ const APP = {
         });
     },
     navigate: (keyword, id) => {
-        if (!id) {
-            window.location = `./results.html?keyword=${keyword}`;
-        } else {
-            window.location = `./suggest.html?id=${id}&title=${keyword}`;
-        }
+        if (!id) return window.location = `./results.html?keyword=${keyword}`;
+        return window.location = `./suggest.html?id=${id}&title=${keyword}`;
     },
     pageSpecific: () => {
         if(document.body.id === 'home') {
@@ -188,7 +181,7 @@ const APP = {
             let url = window.location.search;
             let movieId = url.split('=')[1].split('&').shift();
             let title = url.split('=').pop().replaceAll('%27',`'`).replaceAll('%20', ' ');
-            APP.title = title; // do i need this?
+            APP.title = title;
             APP.getSavedResult('suggestStore', movieId);
             document.title = `Suggested results for ${title}`;
         };
@@ -220,7 +213,7 @@ const APP = {
                 console.log(`searchStore has results for keyword: ${key}`);
             } else {
                 console.log(`suggestStore has results for id: ${key} and title: ${APP.title}`);
-            }
+            };
             console.log(APP.results);
             APP.displayCards(APP.keyword, APP.title);
         });
@@ -230,14 +223,15 @@ const APP = {
     },
     displayCards: (keyOrId, title) => {
         let h2 = document.querySelector('.h2');
+        if (APP.results.length === 0) return h2.innerHTML = `No matching results for <span class="keyword">"${keyOrId}"</span>`;
         if (!title) {
             h2.innerHTML = `Search results for <span class="keyword">"${keyOrId}"</span>`;
         } else {
             h2.innerHTML = `Suggested results for <span class="keyword">"${title}"</span>`;
         };
-        if (APP.results.length === 0) {
-            h2.innerHTML = `No matching results for <span class="keyword">"${keyOrId}"</span>`;
-        };
+        // if (APP.results.length === 0) {
+        //     h2.innerHTML = `No matching results for <span class="keyword">"${keyOrId}"</span>`;
+        // };
         let ul = document.querySelector('.cards');
         ul.innerHTML = '';
         let ulContent = APP.results.map((item) => {
