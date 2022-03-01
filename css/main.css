@@ -110,7 +110,7 @@ button:hover {
     color: #7b2d2d;
 }
 
-ul {
+ul, ol {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -250,6 +250,10 @@ ul {
 
     .card {
         margin-bottom: 0;
+    }
+
+    .list {
+        font-size: 1.2rem;
     }
 }
 
