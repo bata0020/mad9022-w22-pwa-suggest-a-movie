@@ -124,10 +124,11 @@ ul {
     border-radius: 0.5rem;
     cursor: pointer;
     margin-bottom: 1rem;
-    box-shadow: 0 0 0.35rem #000;
+    box-shadow: 0 0 0.25rem #191919;
     transition: 
-        background-color 0.4s,
-        transform 0.4s;
+        transform 0.5s,
+        background-color 0.5s;
+        box-shadow: 0.5s;
 }
 
 .card img {
@@ -232,8 +233,9 @@ ul {
         padding-top: 10rem;
     }
 
-    .flex:hover {
-        transform: translateY(-0.125rem);
+    .card:hover {
+        box-shadow: 0 0.25rem 0.65rem #191919;
+        transform: translateY(-0.155rem);
     }
 
     .cards {
